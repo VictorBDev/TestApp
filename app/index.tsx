@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
 const App = () => {
   return (
@@ -9,6 +9,12 @@ const App = () => {
       source={require('../assets/images/mGreymon.png')}
       style={styles.image}
       />
+      <TouchableOpacity
+      onPress={() => alert('¿Eres un niño elegido?')}
+      style={styles.button}
+      >
+        <Text style={styles.buttonText}>Presioname</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -29,6 +35,15 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 50,
     margin: 20
+  },
+  button: {
+    backgroundColor: '#FF0000',
+    padding: 10,
+    borderRadius: 20
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 20
   }
   
 });
