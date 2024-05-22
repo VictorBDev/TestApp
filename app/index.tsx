@@ -1,16 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import { useAssets } from 'expo-asset';
 
 const App = () => {
+
+const [selectedImage, setSelectedImage] = useState<{ localUri: string } | null>(null);
+const [assets] = useAssets([require('../assets/images/mGreymon.png')]);
+
+//To access the camera roll
+let openImagePickerAsync = async () => {
+  let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+  if (permissionResult.granted === false) {
+    alert("Permission to access camera roll is required!");
+    return;
+  }
+
+  const pickerResult = await ImagePicker.launchImageLibraryAsync();
+    if (!pickerResult.canceled) {
+      setSelectedImage({ localUri: pickerResult.assets[0].uri });
+    }
+};
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Soy Metalgreymon</Text>
-      <Image 
-      source={require('../assets/images/mGreymon.png')}
+      <Image
+      source={{
+        uri: selectedImage?.localUri || assets?.[0]?.localUri || undefined,
+      }}
       style={styles.image}
       />
       <TouchableOpacity
-      onPress={() => alert('¿Eres un niño elegido?')}
+      onPress={openImagePickerAsync}
+      //onPress={() => alert('¿Eres un niño elegido?')}
       style={styles.button}
       >
         <Text style={styles.buttonText}>Presioname</Text>
@@ -33,7 +57,8 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
-    borderRadius: 50,
+    borderRadius: 100,
+    resizeMode: 'contain',
     margin: 20
   },
   button: {
