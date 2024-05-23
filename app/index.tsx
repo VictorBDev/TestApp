@@ -18,7 +18,7 @@ const openImagePickerAsync = async () => {
     return;
   }
 
-  //To pick the image
+  // Elegir una imagen
   let pickerResult = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ImagePicker.MediaTypeOptions.Images,
     allowsEditing: true,
@@ -29,22 +29,16 @@ const openImagePickerAsync = async () => {
   if (!pickerResult.canceled && pickerResult.assets && pickerResult.assets.length > 0) {
     setSelectedImage({ localUri: pickerResult.assets[0].uri });
   }
-
-  //To pick the image
-  // const pickerResult = await ImagePicker.launchImageLibraryAsync();
-  //   if (!pickerResult.canceled) {
-  //     setSelectedImage({ localUri: pickerResult.assets[0].uri });
-  //   }
 };
 
-//To share the image
+// Compartir la imagen seleccionada
 const openShareDialog = async() => {
   if (!(await Sharing.isAvailableAsync())) {
     alert("Sharing is not available on your platform.");
     return;
   }
 
-  //add the image to the share dialog
+  // Agrega la imagen seleccionada
   const imageUri = selectedImage?.localUri ?? (assets && assets.length > 0 ? assets[0].localUri : '');
 
   if (imageUri) {
@@ -52,14 +46,6 @@ const openShareDialog = async() => {
   } else {
     alert('No image available to share.');
   }
-  
-  // if (selectedImage?.localUri) {
-  //   await Sharing.shareAsync(selectedImage.localUri);
-  // } else if (assets && assets.length > 0) {
-  //   await Sharing.shareAsync(assets[0].localUri);
-  // }
-
-  // await Sharing.shareAsync(selectedImage?.localUri || assets?.[0]?.localUri || '');
 };
 
   return (
