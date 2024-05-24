@@ -1,13 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useAssets } from 'expo-asset';
 import * as Sharing from 'expo-sharing';
+import UsuarioData from './Usuario.json';
+
 
 const App = () => {
 
+//Define el tipo de dato Usuario
+type Usuario = {
+  "nombre": String,
+  "apellido": String,
+  "edad": Number,
+  "esCasado": Boolean
+}
+
 const [selectedImage, setSelectedImage] = useState<{ localUri: string } | null>(null);
 const [assets] = useAssets([require('../assets/images/mGreymon.png')]);
+//Datos de usuarios
+const [datos, setDatos] = useState<Usuario[]>([]);
+
+useEffect(() => {
+  setDatos(UsuarioData);
+
+}, []);
+return (
+  <View style={styles.container}>
+    {/*Renderizado de datos*/}
+    {datos.map((usuario, index) => (
+      <View key={index}>
+        <Text>Nombre: {usuario.nombre}</Text>
+        <Text>Apellido: {usuario.apellido}</Text>
+        <Text>Edad: {usuario.edad.toString()}</Text>
+        <Text>Casado: {usuario.esCasado ? 'Sí' : 'No'}</Text>
+      </View>
+    ))}
+  </View>
+);
+
+
 
 //Función para abrir el selector de imágenes
 const openImagePickerAsync = async () => {
@@ -73,7 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "#292929"
+    backgroundColor: "#292929",
   },
   title: {
     fontSize: 30,
